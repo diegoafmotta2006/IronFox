@@ -1,5 +1,5 @@
-import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.6.1";
-import { el } from "../dom.js?v=5.6.1";
+import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.7.1";
+import { el } from "../dom.js?v=5.7.1";
 import {
   WEEKDAYS,
   dateKey,
@@ -7,13 +7,14 @@ import {
   monthDays,
   monthNameLower,
   monthTitle,
-} from "../lib/dates.js?v=5.6.1";
+} from "../lib/dates.js?v=5.7.1";
+import { getAccountState } from "../lib/sync.js?v=5.7.1";
 import {
   exerciseSets,
   getDayStatus,
   loadWorkouts,
   workoutGroups,
-} from "../lib/workouts.js?v=5.6.1";
+} from "../lib/workouts.js?v=5.7.1";
 
 const weightFormat = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 2,
@@ -68,19 +69,50 @@ function isCurrentMonth(monthDate, today) {
   );
 }
 
+function buildAccountLink() {
+  const link = el("a", "account-link");
+  link.href = "#/conta";
+  link.setAttribute("aria-label", "Conta");
+  link.title = "Conta";
+
+  const icon = svgEl("svg", {
+    viewBox: "0 0 24 24",
+    width: "18",
+    height: "18",
+    fill: "none",
+    stroke: "currentColor",
+    "stroke-width": "1.6",
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+    "aria-hidden": "true",
+  });
+  icon.append(
+    svgEl("circle", { cx: "12", cy: "8.2", r: "3.4" }),
+    svgEl("path", { d: "M5.2 19.8c.8-3.4 3.5-5.3 6.8-5.3s6 1.9 6.8 5.3" }),
+  );
+  link.append(icon);
+
+  if (getAccountState().user) link.classList.add("account-link--active");
+  return link;
+}
+
 function buildHeader(monthDate, today) {
   const header = el("header", "page-head");
 
   const eyebrowRow = el("div", "page-head__eyebrow-row");
   eyebrowRow.append(el("p", "page-head__eyebrow", `IronFox · v${APP_VERSION}`));
+
+  const actions = el("div", "page-head__actions");
   if (!isCurrentMonth(monthDate, today)) {
     const todayButton = el("button", "page-head__today", "Hoje");
     todayButton.type = "button";
     todayButton.addEventListener("click", () => {
       window.location.hash = "#/";
     });
-    eyebrowRow.append(todayButton);
+    actions.append(todayButton);
   }
+  actions.append(buildAccountLink());
+  eyebrowRow.append(actions);
 
   const nav = el("div", "page-head__nav");
   const previous = el("button", "month-nav", "‹");

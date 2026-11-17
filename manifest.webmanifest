@@ -2,7 +2,7 @@
   "id": "./",
   "name": "IronFox",
   "short_name": "IronFox",
-  "description": "Registro de treinos simples, escuro e offline. Seus dados ficam no aparelho.",
+  "description": "Registro de treinos simples, escuro e offline. Seus dados ficam no aparelho, com sincronização opcional na conta Google.",
   "lang": "pt-BR",
   "dir": "ltr",
   "start_url": "./",

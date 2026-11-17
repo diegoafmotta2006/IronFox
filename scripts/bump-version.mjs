@@ -57,10 +57,15 @@ write(
 for (const file of listJs("src")) {
   write(
     file,
-    read(file).replace(
-      /(from\s+")(\.[^"?]+\.js)(\?v=[^"]*)?"/g,
-      `$1$2?v=${next}"`,
-    ),
+    read(file)
+      .replace(
+        /(from\s+")(\.[^"?]+\.js)(\?v=[^"]*)?"/g,
+        `$1$2?v=${next}"`,
+      )
+      .replace(
+        /(import\(\s*")(\.[^"?]+\.js)(\?v=[^"]*)?"/g,
+        `$1$2?v=${next}"`,
+      ),
   );
 }
 
@@ -68,7 +73,8 @@ write(
   "LEIA-ME.txt",
   read("LEIA-ME.txt")
     .replace(/^Versão atual: .*$/m, `Versão atual: ${next}`)
-    .replace(/^Atualizado em: .*$/m, `Atualizado em: ${stamp}`),
+    .replace(/^Atualizado em: .*$/m, `Atualizado em: ${stamp}`)
+    .replace(/"IRONFOX · V[^"]+"/, `"IRONFOX · V${next}"`),
 );
 
 console.log(`Versão: ${current} -> ${next}`);

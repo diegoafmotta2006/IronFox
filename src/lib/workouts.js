@@ -1,5 +1,5 @@
-import { DAY_STATUS } from "../config.js?v=5.6.1";
-import { dateKey, startOfDay } from "./dates.js?v=5.6.1";
+import { DAY_STATUS } from "../config.js?v=5.7.1";
+import { dateKey, startOfDay } from "./dates.js?v=5.7.1";
 
 const STORAGE_KEY = "treinos.v1";
 const STORAGE_VERSION = 1;
@@ -12,7 +12,8 @@ function normalizeWorkouts(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
-export function loadWorkouts() {
+// Registros internos (inclui lápides de dias apagados) usados pela sincronização.
+export function loadWorkoutRecords() {
   if (!storageAvailable()) return {};
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -24,20 +25,46 @@ export function loadWorkouts() {
   }
 }
 
-export function saveWorkout(date, workout) {
-  const workouts = loadWorkouts();
-  const key = dateKey(date);
-  if (workout) {
-    workouts[key] = workout;
-  } else {
-    delete workouts[key];
-  }
-  if (!storageAvailable()) return workouts;
+export function writeWorkoutRecords(records) {
+  if (!storageAvailable()) return;
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ v: STORAGE_VERSION, workouts }),
+    JSON.stringify({ v: STORAGE_VERSION, workouts: normalizeWorkouts(records) }),
   );
+}
+
+function notifyChange() {
+  window.dispatchEvent(new CustomEvent("workouts:changed"));
+}
+
+// Aplica dados vindos da nuvem sem reenviá-los de volta.
+export function applyRemoteWorkoutRecords(records) {
+  writeWorkoutRecords(records);
+  window.dispatchEvent(new CustomEvent("workouts:remote"));
+}
+
+export function loadWorkouts() {
+  const records = loadWorkoutRecords();
+  const workouts = {};
+  for (const [key, value] of Object.entries(records)) {
+    if (value && typeof value === "object" && !value.deleted) {
+      workouts[key] = value;
+    }
+  }
   return workouts;
+}
+
+export function saveWorkout(date, workout) {
+  const records = loadWorkoutRecords();
+  const key = dateKey(date);
+  // O carimbo de tempo permite escolher a versão mais nova ao sincronizar.
+  // Um dia apagado vira uma lápide para que a remoção também se propague.
+  records[key] = workout
+    ? { ...workout, updatedAt: Date.now() }
+    : { deleted: true, updatedAt: Date.now() };
+  writeWorkoutRecords(records);
+  notifyChange();
+  return records;
 }
 
 export function getWorkout(workouts, date) {

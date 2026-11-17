@@ -1,19 +1,22 @@
-const CACHE_VERSION = "5.6.1";
+const CACHE_VERSION = "5.7.1";
 const CACHE_NAME = `ironfox-v${CACHE_VERSION}`;
 
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=5.6.1",
+  "./styles.css?v=5.7.1",
   "./manifest.webmanifest",
-  "./src/app.js?v=5.6.1",
-  "./src/config.js?v=5.6.1",
-  "./src/dom.js?v=5.6.1",
-  "./src/screens/index.js?v=5.6.1",
-  "./src/screens/home.js?v=5.6.1",
-  "./src/screens/day.js?v=5.6.1",
-  "./src/lib/dates.js?v=5.6.1",
-  "./src/lib/workouts.js?v=5.6.1",
+  "./src/app.js?v=5.7.1",
+  "./src/config.js?v=5.7.1",
+  "./src/dom.js?v=5.7.1",
+  "./src/screens/index.js?v=5.7.1",
+  "./src/screens/home.js?v=5.7.1",
+  "./src/screens/day.js?v=5.7.1",
+  "./src/screens/account.js?v=5.7.1",
+  "./src/lib/dates.js?v=5.7.1",
+  "./src/lib/workouts.js?v=5.7.1",
+  "./src/lib/firebase.js?v=5.7.1",
+  "./src/lib/sync.js?v=5.7.1",
   "./icons/favicon.svg",
   "./icons/favicon-32.png",
   "./icons/icon-192.png",

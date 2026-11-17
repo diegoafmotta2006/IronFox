@@ -1,6 +1,7 @@
-import { el } from "./dom.js?v=5.6.1";
-import { dateKey } from "./lib/dates.js?v=5.6.1";
-import { routes } from "./screens/index.js?v=5.6.1";
+import { el } from "./dom.js?v=5.7.1";
+import { dateKey } from "./lib/dates.js?v=5.7.1";
+import { initAccount } from "./lib/sync.js?v=5.7.1";
+import { routes } from "./screens/index.js?v=5.7.1";
 
 const app = document.getElementById("app");
 const tabbar = buildTabbar();
@@ -63,6 +64,18 @@ document.addEventListener("visibilitychange", () => {
 });
 
 render();
+
+// Dados que chegam da nuvem atualizam a tela, menos no meio de uma edição.
+window.addEventListener("workouts:remote", () => {
+  if (!window.location.hash.startsWith("#/dia")) render();
+});
+
+// O SDK do Firebase só é baixado quando o app está livre (ou após alguns segundos).
+if ("requestIdleCallback" in window) {
+  window.requestIdleCallback(() => initAccount(), { timeout: 4000 });
+} else {
+  setTimeout(() => initAccount(), 1500);
+}
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
