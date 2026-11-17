@@ -1,0 +1,185 @@
+IRONFOX
+Aplicativo web (PWA) para registrar treinos de academia.
+Versão atual: 5.6.1
+Atualizado em: 17/11/2026
+
+O QUE É
+O IronFox é um app web instalável (PWA) pensado para o celular.
+Tema escuro, visual minimalista e funcionamento offline.
+Nesta versão não há login: todos os dados ficam salvos no próprio
+aparelho, no armazenamento local do navegador (localStorage).
+
+O QUE JÁ EXISTE
+- Tela Início com calendário mensal minimalista.
+- Navegação entre meses com as setas ‹ › ao lado do título; o botão
+  "Hoje" volta ao mês atual. O próximo mês fica desabilitado quando
+  você já está no mês atual.
+- Lista com uma linha por dia do mês exibido, em ordem de data.
+- Regra de status:
+  - Dias passados sem treino registrado aparecem como "Descanso".
+  - Hoje e dias futuros aparecem como "Pendente".
+  - Quando houver treino salvo, a linha mostra os grupos musculares
+    e o peso (ex.: "01/01/2026 - Perna + Abdômen - 68 kg"), com o
+    nome do treino na cor do grupo (ou no degradê dos grupos). No
+    calendário, o dia recebe uma estrela de dez pontas com essas
+    mesmas cores.
+- O app começa vazio, sem dados de exemplo.
+- Tocar num dia do calendário ou numa linha do registro abre a tela
+  do dia, onde se escolhem os grupos musculares treinados.
+
+EVOLUÇÃO E RESUMO
+- Abaixo do registro do mês, na parte de baixo da tela Início,
+  aparecem primeiro o gráfico "Evolução" e depois o "Resumo do mês".
+- Evolução: gráfico de linha simples. A aba "Peso corporal" mostra o
+  peso do dia; a aba "Exercício" tem um seletor para escolher o
+  exercício e mostra a maior carga feita em cada dia. Usa até os
+  últimos 12 registros até o fim do mês exibido.
+- Resumo do mês: quantidade de treinos, quantidade de faltas e a
+  melhor sequência de dias treinados consecutivos no mês.
+
+TELA DO DIA
+- Aberta em "#/dia/AAAA-MM-DD" (ex.: "#/dia/2026-11-15").
+- Lista os grupos musculares e, no fim, as opções "Descanso" e
+  "Pendente".
+- É possível marcar mais de um grupo no mesmo dia (seleção múltipla,
+  marcada com "✓"). O botão "Salvar" grava o treino.
+- "Descanso" e "Pendente" são exclusivos: ao escolher um deles os
+  grupos marcados são limpos, e ao marcar um grupo o status é limpo.
+- Depois de salvar (e ao abrir um dia que já tem treino), a tela
+  mostra apenas as anotações: grupos, exercícios (séries e peso por
+  série) e o peso do dia.
+- No fim das anotações há um botão com lápis ("✎ Editar") para voltar
+  ao formulário e alterar qualquer coisa.
+- "Cancelar" no modo de edição volta às anotações sem salvar.
+- Salvar sem nada marcado remove o registro daquele dia.
+- Num dia sem registro, a tela abre direto no modo de edição;
+  "Voltar" retorna para a Início.
+- No modo de edição, "↻ Repetir último treino" copia os grupos e os
+  exercícios (séries e pesos) do treino mais recente anterior ao dia.
+  O peso corporal não é copiado.
+
+ANOTAÇÃO DOS EXERCÍCIOS
+- Ao marcar um ou mais grupos, aparece um bloco para cada grupo
+  escolhido (separados por grupo), com uma linha por exercício.
+- Cada exercício tem o nome e uma lista de séries. Em cada série você
+  anota as repetições e o peso daquela série (kg, ex.: 7.5, 20.5):
+  "1 = 10 - 5 kg", "2 = 21 - 8 kg"...
+- "+ Série" adiciona outra série no mesmo exercício (já copia o peso
+  da série anterior; as repetições ficam em branco). O "×" ao lado
+  remove aquela série.
+- Use "Adicionar exercício" quantas vezes precisar e o "×" do
+  exercício para remover a linha inteira.
+- No fim da tela há "Peso do dia" para anotar seu peso corporal
+  (aceita duas casas decimais, ex.: 60.59). Esse valor aparece na
+  linha do dia na tela Início.
+- Os blocos aparecem na ordem dos grupos em src/config.js, então dois
+  grupos escolhidos ficam separados na hora de anotar.
+
+COMO ABRIR NO CELULAR
+1. O app precisa ser servido por HTTP local ou HTTPS.
+2. Com o servidor ligado, abra no Chrome:
+   http://127.0.0.1:8080/
+3. Para servir manualmente:
+   cd /sdcard/Download/IronFox
+   python3 -m http.server 8080
+4. Se o Chrome mostrar uma versão antiga, recarregue ou abra com uma
+   porta/consulta diferente (ex.: http://127.0.0.1:8081/) para
+   escapar do cache do service worker.
+
+INSTALAR NA TELA INICIAL
+- Chrome: menu (tres pontos) > "Adicionar à tela inicial" / "Instalar".
+- Depois de instalado, abre em tela cheia e funciona offline.
+- O service worker guarda os arquivos do app no aparelho.
+
+ONDE FICAM OS DADOS
+- localStorage, chave "treinos.v1", no próprio aparelho. A chave
+  interna continua com esse nome para não perder os dados já salvos.
+- Sem conta, sem servidor, sem envio de dados para fora.
+- Limpar os dados do site no Chrome apaga os treinos.
+- Cada dia guarda um objeto de treino. Exemplo:
+  {
+    groups: ["perna", "abdomen"],
+    exercises: {
+      perna: [
+        {
+          name: "panturrilha",
+          sets: [
+            { reps: 10, weightKg: 5 },
+            { reps: 21, weightKg: 8 }
+          ]
+        }
+      ],
+      abdomen: [{ name: "prancha", sets: [{ reps: null, weightKg: null }] }]
+    },
+    weightKg: 60
+  }
+- "weightKg" no topo é o peso corporal do dia.
+- Cada série guarda "reps" (repetições) e "weightKg" (peso da série).
+- Registros antigos de um só grupo usam { group: "perna" } e continuam
+  sendo lidos (workoutGroups); o weightKg antigo é tratado como o peso
+  do dia.
+- Exercícios no formato antigo ({ name, sets: 3, weightKg: 40 }) também
+  continuam sendo lidos (exerciseSets): viram 3 séries com o mesmo peso.
+- Status explícito usa { status: "descanso" } ou { status: "pendente" }.
+
+GRUPOS MUSCULARES E CORES
+- Perna: verde pastel (#bfe3c6)
+- Bíceps: azul pastel (#c7d4f5)
+- Tríceps: lilás pastel (#d9cbf2)
+- Antebraço: areia pastel (#e9dcc4)
+- Peito: rosa pastel (#f3c9cf)
+- Costa: ciano pastel (#c6e6ea)
+- Ombro: pêssego pastel (#f2ddc2)
+- Panturrilha: lima pastel (#d8e6bd)
+- Abdômen: ameixa pastel (#e7d9ea)
+- Falta: vermelho pastel (#e58f8f) — marca o dia como falta; não pede
+  exercícios.
+Novos grupos podem ser adicionados em src/config.js (chave, rótulo e
+cor); a tela do dia e o calendário passam a exibi-los automaticamente.
+
+ESTRUTURA DO PROJETO
+index.html                página única do app
+styles.css                tema escuro e layout
+manifest.webmanifest      identidade do PWA (nome, ícones, cores)
+sw.js                     service worker (offline e cache)
+version.json              versão atual do app
+LEIA-ME.txt               este arquivo
+scripts/bump-version.mjs  atualiza a versão em todos os arquivos
+icons/                    ícones do app
+src/app.js                inicialização e navegação por hash
+src/config.js             versão, grupos musculares e status
+src/dom.js                utilitário para criar elementos
+src/screens/index.js      registro das telas e rotas
+src/screens/home.js       tela Início (calendário e registro)
+src/screens/day.js        tela do dia (escolha dos grupos/status)
+src/lib/dates.js          funções de data em português
+src/lib/workouts.js       leitura/gravação dos treinos e status
+
+VERSÃO E CACHE
+- A versão aparece no topo do app: "IRONFOX · V5.6.1".
+- Toda alteração no app deve gerar uma versão nova. Isso muda a URL
+  do CSS e do JS e o nome do cache, garantindo que o Chrome baixe a
+  versão atualizada em vez de reaproveitar a antiga.
+- Para subir a versão (patch):
+  node scripts/bump-version.mjs
+- Também é possível forçar:
+  node scripts/bump-version.mjs minor
+  node scripts/bump-version.mjs major
+  node scripts/bump-version.mjs 5.1.2
+- O script atualiza a versão em: version.json, src/config.js,
+  index.html, sw.js e na linha "Versão atual" deste arquivo.
+- Todos os imports internos de JavaScript também recebem a versão
+  automaticamente, para o navegador nunca misturar arquivos antigos
+  com novos (isso evita tela preta depois de uma atualização).
+
+SE A TELA FICAR PRETA
+- Recarregue a página: o app mostra uma mensagem de erro quando algo
+  não carrega.
+- Em último caso, limpe os dados do site no Chrome (Configurações do
+  site > localhost > Limpar e redefinir) e abra de novo.
+
+PRÓXIMAS TELAS
+- A navegação já suporta novas telas: crie o módulo em src/screens/
+  e registre-o em src/screens/index.js. A barra de navegação aparece
+  automaticamente quando houver mais de uma tela visível.
+- Próximo passo provável: registrar o peso (kg) do treino no dia.
