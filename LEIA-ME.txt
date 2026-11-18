@@ -1,7 +1,7 @@
 IRONFOX
 Aplicativo web (PWA) para registrar treinos de academia.
-Versão atual: 5.7.1
-Atualizado em: 17/11/2026
+Versão atual: 5.7.2
+Atualizado em: 18/11/2026
 
 O QUE É
 O IronFox é um app web instalável (PWA) pensado para o celular.
@@ -215,7 +215,7 @@ firebase.json             configuração de deploy (Hosting + regras)
 .firebaserc               projeto padrão do Firebase (iroxfox-f3b91)
 
 VERSÃO E CACHE
-- A versão aparece no topo do app: "IRONFOX · V5.7.1".
+- A versão aparece no topo do app: "IRONFOX · V5.7.2".
 - Toda alteração no app deve gerar uma versão nova. Isso muda a URL
   do CSS e do JS e o nome do cache, garantindo que o Chrome baixe a
   versão atualizada em vez de reaproveitar a antiga.
@@ -243,3 +243,10 @@ PRÓXIMAS TELAS
   automaticamente quando houver mais de uma tela visível.
 - Próximos passos prováveis: exportar os treinos, metas por grupo e
   lembretes.
+
+HISTÓRICO DE VERSÕES
+5.7.2 (18/11/2026)
+- Corrige a tela Conta: o conteúdo (mensagem de status e botão
+  "Entrar com Google") não aparecia porque o primeiro desenho da
+  tela acontecia antes de ela entrar na página e o código desistia.
+  Agora a tela desenha normalmente e o login volta a aparecer.

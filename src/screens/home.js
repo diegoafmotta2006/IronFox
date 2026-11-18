@@ -1,5 +1,5 @@
-import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.7.1";
-import { el } from "../dom.js?v=5.7.1";
+import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.7.2";
+import { el } from "../dom.js?v=5.7.2";
 import {
   WEEKDAYS,
   dateKey,
@@ -7,14 +7,14 @@ import {
   monthDays,
   monthNameLower,
   monthTitle,
-} from "../lib/dates.js?v=5.7.1";
-import { getAccountState } from "../lib/sync.js?v=5.7.1";
+} from "../lib/dates.js?v=5.7.2";
+import { getAccountState } from "../lib/sync.js?v=5.7.2";
 import {
   exerciseSets,
   getDayStatus,
   loadWorkouts,
   workoutGroups,
-} from "../lib/workouts.js?v=5.7.1";
+} from "../lib/workouts.js?v=5.7.2";
 
 const weightFormat = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 2,

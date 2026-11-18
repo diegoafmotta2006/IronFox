@@ -1,7 +1,7 @@
 import {
   applyRemoteWorkoutRecords,
   loadWorkoutRecords,
-} from "./workouts.js?v=5.7.1";
+} from "./workouts.js?v=5.7.2";
 
 const PUSH_DELAY_MS = 900;
 
@@ -154,7 +154,7 @@ export function initAccount() {
 
   window.addEventListener("workouts:changed", schedulePush);
 
-  import("./firebase.js?v=5.7.1")
+  import("./firebase.js?v=5.7.2")
     .then((mod) => {
       firebase = mod;
       if (!mod.hasConfig()) {
@@ -178,7 +178,7 @@ export function initAccount() {
 export async function signIn() {
   if (!firebase) initAccount();
   try {
-    const mod = await import("./firebase.js?v=5.7.1");
+    const mod = await import("./firebase.js?v=5.7.2");
     firebase = mod;
     await mod.signInWithGoogle();
   } catch (error) {

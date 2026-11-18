@@ -1,10 +1,10 @@
-import { APP_VERSION } from "../config.js?v=5.7.1";
-import { el } from "../dom.js?v=5.7.1";
+import { APP_VERSION } from "../config.js?v=5.7.2";
+import { el } from "../dom.js?v=5.7.2";
 import {
   getAccountState,
   signIn,
   signOut,
-} from "../lib/sync.js?v=5.7.1";
+} from "../lib/sync.js?v=5.7.2";
 
 const timeFormat = new Intl.DateTimeFormat("pt-BR", {
   hour: "2-digit",
@@ -78,14 +78,18 @@ export function renderAccount() {
   const body = el("div", "account");
 
   const unsubscribe = () => {
-    window.removeEventListener("account:changed", paint);
+    window.removeEventListener("account:changed", onAccountChanged);
   };
 
-  function paint() {
+  function onAccountChanged() {
     if (!screen.isConnected) {
       unsubscribe();
       return;
     }
+    paint();
+  }
+
+  function paint() {
     const state = getAccountState();
     body.replaceChildren();
 
@@ -174,7 +178,7 @@ export function renderAccount() {
     );
   }
 
-  window.addEventListener("account:changed", paint);
+  window.addEventListener("account:changed", onAccountChanged);
   screen.append(buildHeader(), body);
   paint();
   return screen;
