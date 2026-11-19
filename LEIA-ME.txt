@@ -1,6 +1,6 @@
 IRONFOX
 Aplicativo web (PWA) para registrar treinos de academia.
-Versão atual: 5.8.5
+Versão atual: 5.8.6
 Atualizado em: 19/11/2026
 
 O QUE É
@@ -223,7 +223,7 @@ firebase.json             configuração de deploy (Hosting + regras)
 .firebaserc               projeto padrão do Firebase (iroxfox-f3b91)
 
 VERSÃO E CACHE
-- A versão aparece no topo do app: "IRONFOX · V5.8.5".
+- A versão aparece no topo do app: "IRONFOX · V5.8.6".
 - Toda alteração no app deve gerar uma versão nova. Isso muda a URL
   do CSS e do JS e o nome do cache, garantindo que o Chrome baixe a
   versão atualizada em vez de reaproveitar a antiga.
@@ -253,6 +253,11 @@ PRÓXIMAS TELAS
   lembretes.
 
 HISTÓRICO DE VERSÕES
+5.8.6 (19/11/2026)
+- A recarga automática depois de uma atualização não acontece mais na
+  primeira visita (quando não existe service worker anterior), o que
+  causava uma tela vazia de ~2 segundos na primeira abertura.
+
 5.8.5 (19/11/2026)
 - Corrige a tela preta: o script de versão reescrevia qualquer "?v="
   no sw.js, inclusive dentro de um comentário, e isso quebrou a linha

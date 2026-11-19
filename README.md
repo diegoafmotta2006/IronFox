@@ -2,7 +2,7 @@
 
 Aplicativo web (PWA) para registrar treinos de academia, com tema escuro, visual minimalista e funcionamento offline. Os dados ficam no próprio aparelho e, opcionalmente, são sincronizados entre dispositivos com uma conta Google.
 
-**Versão atual:** 5.8.5
+**Versão atual:** 5.8.6
 **App publicado:** https://iroxfox-f3b91.web.app
 
 ## Recursos
@@ -86,6 +86,10 @@ node scripts/bump-version.mjs 5.7.2
 O script atualiza `version.json`, `index.html`, `sw.js` e `src/config.js` de forma consistente.
 
 ## Histórico de versões
+
+### 5.8.6 (19/11/2026)
+
+- A recarga automática após atualização não dispara mais na primeira visita (quando ainda não existe service worker controlando a página), que causava uma tela vazia de ~2 s na primeira abertura.
 
 ### 5.8.5 (19/11/2026)
 

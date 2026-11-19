@@ -1,7 +1,7 @@
-import { el } from "./dom.js?v=5.8.5";
-import { dateKey } from "./lib/dates.js?v=5.8.5";
-import { initAccount } from "./lib/sync.js?v=5.8.5";
-import { routes } from "./screens/index.js?v=5.8.5";
+import { el } from "./dom.js?v=5.8.6";
+import { dateKey } from "./lib/dates.js?v=5.8.6";
+import { initAccount } from "./lib/sync.js?v=5.8.6";
+import { routes } from "./screens/index.js?v=5.8.6";
 
 const app = document.getElementById("app");
 const tabbar = buildTabbar();
@@ -86,11 +86,13 @@ if ("serviceWorker" in navigator) {
   });
 
   // Quando uma versão nova assume o controle, recarrega uma única vez para
-  // a tela sair do HTML/JS antigos. A janela de 10s evita laço de recarga.
+  // a tela sair do HTML/JS antigos. Na primeira instalação (sem controlador
+  // anterior) não recarrega: não há nada velho para trocar.
   const RELOAD_KEY = "ironfox.reload-at";
+  const hadController = Boolean(navigator.serviceWorker.controller);
   let reloading = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (reloading) return;
+    if (reloading || !hadController) return;
     const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
     if (Date.now() - last < 10000) return;
     reloading = true;
