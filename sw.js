@@ -1,22 +1,22 @@
-const CACHE_VERSION = "5.8.4";
+const CACHE_VERSION = "5.8.5";
 const CACHE_NAME = `ironfox-v${CACHE_VERSION}`;
 
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=5.8.4",
+  "./styles.css?v=5.8.5",
   "./manifest.webmanifest",
-  "./src/app.js?v=5.8.4",
-  "./src/config.js?v=5.8.4",
-  "./src/dom.js?v=5.8.4",
-  "./src/screens/index.js?v=5.8.4",
-  "./src/screens/home.js?v=5.8.4",
-  "./src/screens/day.js?v=5.8.4",
-  "./src/screens/account.js?v=5.8.4",
-  "./src/lib/dates.js?v=5.8.4",
-  "./src/lib/workouts.js?v=5.8.4",
-  "./src/lib/firebase.js?v=5.8.4",
-  "./src/lib/sync.js?v=5.8.4",
+  "./src/app.js?v=5.8.5",
+  "./src/config.js?v=5.8.5",
+  "./src/dom.js?v=5.8.5",
+  "./src/screens/index.js?v=5.8.5",
+  "./src/screens/home.js?v=5.8.5",
+  "./src/screens/day.js?v=5.8.5",
+  "./src/screens/account.js?v=5.8.5",
+  "./src/lib/dates.js?v=5.8.5",
+  "./src/lib/workouts.js?v=5.8.5",
+  "./src/lib/firebase.js?v=5.8.5",
+  "./src/lib/sync.js?v=5.8.5",
   "./icons/favicon.svg",
   "./icons/favicon-32.png",
   "./icons/icon-192.png",
@@ -52,8 +52,10 @@ self.addEventListener("activate", (event) => {
 async function networkFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   // HTML e navegação nunca podem vir do cache HTTP do navegador: o
-  // index.html tem max-age e, sem isso, o aparelho fica preso na versão
-  // antiga (com os ?v=5.8.4"navigate" || request.destination === "document";
+  // index.html tem max-age e, sem isso, o aparelho fica preso na versao
+  // antiga (com as versoes antigas nos imports) por ate uma hora.
+  const mustRevalidate =
+    request.mode === "navigate" || request.destination === "document";
   try {
     const response = mustRevalidate
       ? await fetch(request.url, { cache: "no-store", credentials: "same-origin" })

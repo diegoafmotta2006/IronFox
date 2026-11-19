@@ -1,4 +1,4 @@
-export const APP_VERSION = "5.8.4";
+export const APP_VERSION = "5.8.5";
 
 export const MUSCLE_GROUPS = {
   perna: { label: "Perna", color: "#a6e6b3" },

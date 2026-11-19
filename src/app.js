@@ -1,7 +1,7 @@
-import { el } from "./dom.js?v=5.8.4";
-import { dateKey } from "./lib/dates.js?v=5.8.4";
-import { initAccount } from "./lib/sync.js?v=5.8.4";
-import { routes } from "./screens/index.js?v=5.8.4";
+import { el } from "./dom.js?v=5.8.5";
+import { dateKey } from "./lib/dates.js?v=5.8.5";
+import { initAccount } from "./lib/sync.js?v=5.8.5";
+import { routes } from "./screens/index.js?v=5.8.5";
 
 const app = document.getElementById("app");
 const tabbar = buildTabbar();

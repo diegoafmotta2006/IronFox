@@ -51,7 +51,9 @@ write(
   read("sw.js")
     .replace(/const CACHE_VERSION = "[^"]+";/, `const CACHE_VERSION = "${next}";`)
     .replace(/(\.\/src\/[^"?]+\.js)(\?v=[^"]*)?"/g, `$1?v=${next}"`)
-    .replace(/\?v=[^"']+/g, `?v=${next}`),
+    // Só substitui dentro de strings de import: para no espaço, aspas,
+    // parêntese ou crase, para não corromper comentários que citam ?v=.
+    .replace(/\?v=[^"'\s`)]+/g, `?v=${next}`),
 );
 
 for (const file of listJs("src")) {

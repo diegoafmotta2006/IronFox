@@ -2,7 +2,7 @@
 
 Aplicativo web (PWA) para registrar treinos de academia, com tema escuro, visual minimalista e funcionamento offline. Os dados ficam no próprio aparelho e, opcionalmente, são sincronizados entre dispositivos com uma conta Google.
 
-**Versão atual:** 5.8.4
+**Versão atual:** 5.8.5
 **App publicado:** https://iroxfox-f3b91.web.app
 
 ## Recursos
@@ -86,6 +86,10 @@ node scripts/bump-version.mjs 5.7.2
 O script atualiza `version.json`, `index.html`, `sw.js` e `src/config.js` de forma consistente.
 
 ## Histórico de versões
+
+### 5.8.5 (19/11/2026)
+
+- **Corrige a tela preta introduzida na 5.8.4.** O `scripts/bump-version.mjs` reescreve todo `?v=` encontrado no `sw.js`; como um comentário meu citava `?v=`, o script substituiu o trecho e destruiu a linha `const mustRevalidate = ...`. O service worker passava a lançar `ReferenceError: mustRevalidate is not defined` em **toda** requisição, então nenhum arquivo carregava (a aba anônima funcionava por não usar service worker). Código restaurado e o script agora só troca a versão dentro de strings de import.
 
 ### 5.8.4 (18/11/2026)
 
