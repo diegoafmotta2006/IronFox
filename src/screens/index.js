@@ -1,6 +1,6 @@
-import { renderAccount } from "./account.js?v=5.8.3";
-import { renderDay } from "./day.js?v=5.8.3";
-import { renderHome } from "./home.js?v=5.8.3";
+import { renderAccount } from "./account.js?v=5.8.4";
+import { renderDay } from "./day.js?v=5.8.4";
+import { renderHome } from "./home.js?v=5.8.4";
 
 export const routes = [
   {

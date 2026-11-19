@@ -1,7 +1,7 @@
-import { el } from "./dom.js?v=5.8.3";
-import { dateKey } from "./lib/dates.js?v=5.8.3";
-import { initAccount } from "./lib/sync.js?v=5.8.3";
-import { routes } from "./screens/index.js?v=5.8.3";
+import { el } from "./dom.js?v=5.8.4";
+import { dateKey } from "./lib/dates.js?v=5.8.4";
+import { initAccount } from "./lib/sync.js?v=5.8.4";
+import { routes } from "./screens/index.js?v=5.8.4";
 
 const app = document.getElementById("app");
 const tabbar = buildTabbar();
@@ -79,6 +79,22 @@ if ("requestIdleCallback" in window) {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker
+      .register("./sw.js", { updateViaCache: "none" })
+      .then((registration) => registration.update())
+      .catch(() => {});
+  });
+
+  // Quando uma versão nova assume o controle, recarrega uma única vez para
+  // a tela sair do HTML/JS antigos. A janela de 10s evita laço de recarga.
+  const RELOAD_KEY = "ironfox.reload-at";
+  let reloading = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloading) return;
+    const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
+    if (Date.now() - last < 10000) return;
+    reloading = true;
+    sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+    window.location.reload();
   });
 }

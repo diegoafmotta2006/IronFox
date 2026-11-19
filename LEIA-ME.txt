@@ -1,6 +1,6 @@
 IRONFOX
 Aplicativo web (PWA) para registrar treinos de academia.
-Versão atual: 5.8.3
+Versão atual: 5.8.4
 Atualizado em: 18/11/2026
 
 O QUE É
@@ -223,7 +223,7 @@ firebase.json             configuração de deploy (Hosting + regras)
 .firebaserc               projeto padrão do Firebase (iroxfox-f3b91)
 
 VERSÃO E CACHE
-- A versão aparece no topo do app: "IRONFOX · V5.8.3".
+- A versão aparece no topo do app: "IRONFOX · V5.8.4".
 - Toda alteração no app deve gerar uma versão nova. Isso muda a URL
   do CSS e do JS e o nome do cache, garantindo que o Chrome baixe a
   versão atualizada em vez de reaproveitar a antiga.
@@ -253,6 +253,16 @@ PRÓXIMAS TELAS
   lembretes.
 
 HISTÓRICO DE VERSÕES
+5.8.4 (18/11/2026)
+- Corrige o celular preso em versão antiga: o index.html era servido
+  com Cache-Control max-age=3600, então o aparelho continuava usando o
+  HTML velho (com os arquivos ?v= antigos) por até uma hora. Agora o
+  HTML, o version.json, o manifest e o service worker vão com
+  no-cache, o service worker busca a navegação sem cache e, quando uma
+  versão nova assume o controle, a tela recarrega sozinha uma vez.
+  Isso é o que fazia o seletor de exercício da Evolução continuar
+  aparecendo como o menu nativo antigo no celular.
+
 5.8.3 (18/11/2026)
 - Novo ícone do app (cabeça de raposa em anel, cobre sobre fundo
   escuro), gerado a partir da arte original em 1024x1024. Todos os

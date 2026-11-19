@@ -1,5 +1,5 @@
-import { DAY_STATUS } from "../config.js?v=5.8.3";
-import { dateKey, startOfDay } from "./dates.js?v=5.8.3";
+import { DAY_STATUS } from "../config.js?v=5.8.4";
+import { dateKey, startOfDay } from "./dates.js?v=5.8.4";
 
 const STORAGE_KEY = "treinos.v1";
 const STORAGE_VERSION = 1;

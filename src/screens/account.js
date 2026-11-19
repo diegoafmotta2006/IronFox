@@ -1,10 +1,10 @@
-import { APP_VERSION } from "../config.js?v=5.8.3";
-import { el } from "../dom.js?v=5.8.3";
+import { APP_VERSION } from "../config.js?v=5.8.4";
+import { el } from "../dom.js?v=5.8.4";
 import {
   getAccountState,
   signIn,
   signOut,
-} from "../lib/sync.js?v=5.8.3";
+} from "../lib/sync.js?v=5.8.4";
 
 const timeFormat = new Intl.DateTimeFormat("pt-BR", {
   hour: "2-digit",

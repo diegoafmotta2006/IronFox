@@ -1,6 +1,6 @@
-import { DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.8.3";
-import { el } from "../dom.js?v=5.8.3";
-import { formatBR, dateKey } from "../lib/dates.js?v=5.8.3";
+import { DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.8.4";
+import { el } from "../dom.js?v=5.8.4";
+import { formatBR, dateKey } from "../lib/dates.js?v=5.8.4";
 import {
   exerciseSets,
   getWorkout,
@@ -8,7 +8,7 @@ import {
   loadWorkouts,
   saveWorkout,
   workoutGroups,
-} from "../lib/workouts.js?v=5.8.3";
+} from "../lib/workouts.js?v=5.8.4";
 
 const STATUS_OPTIONS = [
   { key: DAY_STATUS.DESCANSO, label: "Descanso" },
