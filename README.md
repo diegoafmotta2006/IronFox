@@ -2,7 +2,7 @@
 
 Aplicativo web (PWA) para registrar treinos de academia, com tema escuro, visual minimalista e funcionamento offline. Os dados ficam no próprio aparelho e, opcionalmente, são sincronizados entre dispositivos com uma conta Google.
 
-**Versão atual:** 5.7.2
+**Versão atual:** 5.8.3
 **App publicado:** https://iroxfox-f3b91.web.app
 
 ## Recursos
@@ -86,6 +86,16 @@ node scripts/bump-version.mjs 5.7.2
 O script atualiza `version.json`, `index.html`, `sw.js` e `src/config.js` de forma consistente.
 
 ## Histórico de versões
+
+### 5.8.3 (18/11/2026)
+
+- **Novo ícone do app:** cabeça de raposa com anel, em cobre sobre fundo escuro, gerado a partir da arte original em 1024×1024. Todos os tamanhos foram refeitos com recorte uniforme em volta do logo: `icon-192`, `icon-512`, `icon-maskable-512`, `apple-touch-icon` (180), `favicon-32` e `favicon.svg`.
+
+### 5.8.0 (18/11/2026)
+
+- **Nova paleta dos grupos musculares:** cores pastel com matizes bem separados (verde, azul-céu, índigo, dourado, rosa, água, pêssego, lima e violeta), para não confundir grupos parecidos no calendário e nos registros.
+- **Falta em vermelho vivo** (`#ff2e3f`), bem mais chamativo que o tom pastel anterior.
+- **Seletor de exercício da Evolução** refeito no tema do app: saiu o `select` nativo e entrou um botão escuro com o nome atual, chevron e lista suspensa com o item escolhido em destaque.
 
 ### 5.7.2 (18/11/2026)
 

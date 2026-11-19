@@ -1,6 +1,6 @@
 IRONFOX
 Aplicativo web (PWA) para registrar treinos de academia.
-Versão atual: 5.7.2
+Versão atual: 5.8.3
 Atualizado em: 18/11/2026
 
 O QUE É
@@ -34,8 +34,10 @@ EVOLUÇÃO E RESUMO
   aparecem primeiro o gráfico "Evolução" e depois o "Resumo do mês".
 - Evolução: gráfico de linha simples. A aba "Peso corporal" mostra o
   peso do dia; a aba "Exercício" tem um seletor para escolher o
-  exercício e mostra a maior carga feita em cada dia. Usa até os
-  últimos 12 registros até o fim do mês exibido.
+  exercício e mostra a maior carga feita em cada dia. O seletor abre
+  uma lista no próprio tema do app (botão escuro com o nome atual e
+  chevron), em vez do menu nativo do navegador. Usa até os últimos 12
+  registros até o fim do mês exibido.
 - Resumo do mês: quantidade de treinos, quantidade de faltas e a
   melhor sequência de dias treinados consecutivos no mês.
 
@@ -92,6 +94,10 @@ INSTALAR NA TELA INICIAL
 - Chrome: menu (tres pontos) > "Adicionar à tela inicial" / "Instalar".
 - Depois de instalado, abre em tela cheia e funciona offline.
 - O service worker guarda os arquivos do app no aparelho.
+- Se o ícone mudar numa versão nova, o atalho já instalado pode
+  continuar mostrando o ícone antigo por um tempo (o Android guarda o
+  ícone no launcher). Para atualizar na hora, remova o atalho e instale
+  de novo.
 
 CONTA E SINCRONIZAÇÃO (OPCIONAL)
 - A tela "Conta" abre pelo ícone de pessoa no canto superior direito
@@ -176,19 +182,21 @@ ONDE FICAM OS DADOS
 - Status explícito usa { status: "descanso" } ou { status: "pendente" }.
 
 GRUPOS MUSCULARES E CORES
-- Perna: verde pastel (#bfe3c6)
-- Bíceps: azul pastel (#c7d4f5)
-- Tríceps: lilás pastel (#d9cbf2)
-- Antebraço: areia pastel (#e9dcc4)
-- Peito: rosa pastel (#f3c9cf)
-- Costa: ciano pastel (#c6e6ea)
-- Ombro: pêssego pastel (#f2ddc2)
-- Panturrilha: lima pastel (#d8e6bd)
-- Abdômen: ameixa pastel (#e7d9ea)
-- Falta: vermelho pastel (#e58f8f) — marca o dia como falta; não pede
+- Perna: verde (#a6e6b3)
+- Bíceps: azul-céu (#9cc7fb)
+- Tríceps: índigo claro (#bdb6fa)
+- Antebraço: dourado (#f0d894)
+- Peito: rosa (#f9b1c6)
+- Costa: água/verde-água (#94e8da)
+- Ombro: pêssego (#fac39a)
+- Panturrilha: lima (#d3ec93)
+- Abdômen: violeta (#dcb3f7)
+- Falta: vermelho vivo (#ff2e3f) — marca o dia como falta; não pede
   exercícios.
-Novos grupos podem ser adicionados em src/config.js (chave, rótulo e
-cor); a tela do dia e o calendário passam a exibi-los automaticamente.
+Cada grupo tem um matiz bem separado dos outros para não confundir no
+calendário e na lista. Novos grupos podem ser adicionados em
+src/config.js (chave, rótulo e cor); a tela do dia e o calendário
+passam a exibi-los automaticamente.
 
 ESTRUTURA DO PROJETO
 index.html                página única do app
@@ -215,7 +223,7 @@ firebase.json             configuração de deploy (Hosting + regras)
 .firebaserc               projeto padrão do Firebase (iroxfox-f3b91)
 
 VERSÃO E CACHE
-- A versão aparece no topo do app: "IRONFOX · V5.7.2".
+- A versão aparece no topo do app: "IRONFOX · V5.8.3".
 - Toda alteração no app deve gerar uma versão nova. Isso muda a URL
   do CSS e do JS e o nome do cache, garantindo que o Chrome baixe a
   versão atualizada em vez de reaproveitar a antiga.
@@ -245,6 +253,21 @@ PRÓXIMAS TELAS
   lembretes.
 
 HISTÓRICO DE VERSÕES
+5.8.3 (18/11/2026)
+- Novo ícone do app (cabeça de raposa em anel, cobre sobre fundo
+  escuro), gerado a partir da arte original em 1024x1024. Todos os
+  tamanhos foram refeitos: icon-192, icon-512, maskable 512,
+  apple-touch-icon 180, favicon 32 e favicon SVG.
+
+5.8.0 (18/11/2026)
+- Nova paleta dos grupos musculares: matizes bem separados (verde,
+  azul-céu, índigo, dourado, rosa, água, pêssego, lima e violeta) para
+  não confundir os grupos parecidos.
+- Falta agora usa vermelho vivo (#ff2e3f), bem mais chamativo.
+- A escolha do exercício na Evolução deixou o menu nativo do navegador
+  e virou um seletor no tema do app: botão escuro com o nome atual, uma
+  seta e uma lista suspensa com destaque no exercício escolhido.
+
 5.7.2 (18/11/2026)
 - Corrige a tela Conta: o conteúdo (mensagem de status e botão
   "Entrar com Google") não aparecia porque o primeiro desenho da

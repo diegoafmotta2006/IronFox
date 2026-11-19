@@ -1,5 +1,5 @@
-import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.7.2";
-import { el } from "../dom.js?v=5.7.2";
+import { APP_VERSION, DAY_STATUS, MUSCLE_GROUPS } from "../config.js?v=5.8.3";
+import { el } from "../dom.js?v=5.8.3";
 import {
   WEEKDAYS,
   dateKey,
@@ -7,14 +7,14 @@ import {
   monthDays,
   monthNameLower,
   monthTitle,
-} from "../lib/dates.js?v=5.7.2";
-import { getAccountState } from "../lib/sync.js?v=5.7.2";
+} from "../lib/dates.js?v=5.8.3";
+import { getAccountState } from "../lib/sync.js?v=5.8.3";
 import {
   exerciseSets,
   getDayStatus,
   loadWorkouts,
   workoutGroups,
-} from "../lib/workouts.js?v=5.7.2";
+} from "../lib/workouts.js?v=5.8.3";
 
 const weightFormat = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 2,
@@ -450,6 +450,7 @@ function buildEvolution(monthDate, workouts) {
   const exercises = collectExerciseSeries(workouts, limitKey);
   let mode = "weight";
   let selectedExercise = exercises[0]?.name ?? "";
+  let pickerOpen = false;
 
   const tabs = el("div", "chart-tabs");
   const weightTab = el("button", "chart-tab", "Peso corporal");
@@ -458,16 +459,99 @@ function buildEvolution(monthDate, workouts) {
   exerciseTab.type = "button";
   weightTab.addEventListener("click", () => {
     mode = "weight";
+    pickerOpen = false;
     paint();
   });
   exerciseTab.addEventListener("click", () => {
     mode = "exercise";
+    pickerOpen = false;
     paint();
   });
   tabs.append(weightTab, exerciseTab);
 
   const body = el("div", "chart-body");
   section.append(tabs, body);
+
+  function buildPicker() {
+    const wrap = el("div", "picker");
+
+    const trigger = el("button", "picker__trigger");
+    trigger.type = "button";
+    trigger.setAttribute("aria-haspopup", "listbox");
+    trigger.setAttribute("aria-expanded", String(pickerOpen));
+    trigger.setAttribute("aria-label", "Escolher exercício");
+
+    const chevron = svgEl("svg", {
+      viewBox: "0 0 24 24",
+      width: "14",
+      height: "14",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": "true",
+      class: "picker__chevron",
+    });
+    chevron.append(svgEl("path", { d: "M6 9.5l6 6 6-6" }));
+    trigger.append(el("span", "picker__name", selectedExercise), chevron);
+
+    const list = el("div", "picker__list");
+    list.setAttribute("role", "listbox");
+    list.setAttribute("aria-label", "Exercícios");
+    list.hidden = !pickerOpen;
+
+    for (const exercise of exercises) {
+      const active = exercise.name === selectedExercise;
+      const option = el("button", "picker__option", exercise.name);
+      option.type = "button";
+      option.setAttribute("role", "option");
+      option.setAttribute("aria-selected", String(active));
+      if (active) {
+        option.classList.add("picker__option--selected");
+        option.append(el("span", "picker__check", "✓"));
+      }
+      option.addEventListener("click", () => {
+        pickerOpen = false;
+        selectedExercise = exercise.name;
+        paint();
+      });
+      list.append(option);
+    }
+
+    function closePicker() {
+      if (!pickerOpen) return;
+      pickerOpen = false;
+      list.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    trigger.addEventListener("click", () => {
+      pickerOpen = !pickerOpen;
+      list.hidden = !pickerOpen;
+      trigger.setAttribute("aria-expanded", String(pickerOpen));
+      if (pickerOpen) {
+        document.addEventListener(
+          "pointerdown",
+          (event) => {
+            if (!wrap.contains(event.target)) closePicker();
+          },
+          { once: true },
+        );
+      }
+    });
+
+    wrap.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && pickerOpen) {
+        event.stopPropagation();
+        closePicker();
+        trigger.focus();
+      }
+    });
+
+    wrap.append(trigger, list);
+    return wrap;
+  }
 
   function paint() {
     weightTab.setAttribute("aria-pressed", String(mode === "weight"));
@@ -490,25 +574,15 @@ function buildEvolution(monthDate, workouts) {
       return;
     }
 
-    const select = el("select", "chart__select");
-    select.setAttribute("aria-label", "Escolher exercício");
-    for (const exercise of exercises) {
-      const option = el("option", null, exercise.name);
-      option.value = exercise.name;
-      if (exercise.name === selectedExercise) option.selected = true;
-      select.append(option);
-    }
-    select.addEventListener("change", () => {
-      selectedExercise = select.value;
-      paint();
-    });
-
     const current =
       exercises.find((exercise) => exercise.name === selectedExercise) ??
       exercises[0];
     const points = current.points.slice(-12);
 
-    body.append(select, buildChart(points, `Evolução de carga de ${current.name}`));
+    body.append(
+      buildPicker(),
+      buildChart(points, `Evolução de carga de ${current.name}`),
+    );
     if (current.points.length > points.length) {
       body.append(el("p", "chart__caption", "Últimos 12 registros"));
     }
